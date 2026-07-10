@@ -47,7 +47,7 @@ const git = `git --git-dir=${gitDir}`;
 const noBlobs = opts.includes("--no-blobs");
 const noTrees = opts.includes("--no-trees");
 
-const showRefs = () => exec(`${git} show-ref`);
+const showRefs = () => exec(`${git} for-each-ref --format='%(objectname) %(refname) %(symref)'`);
 const catAllObjects = () => exec(`${git} cat-file --batch-check --batch-all-objects`);
 const catFile = hash => exec(`${git} cat-file -p ${hash}`);
 const catObject = gitObject => catFile(getHash(gitObject));

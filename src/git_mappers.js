@@ -27,8 +27,8 @@ function mapLineToTree(line) {
 }
 
 function mapLineToRef(line) {
-    const [hash, name] = splitByWhitespace(line);
-    return { hash, name };
+    const [hash, name, symref] = splitByWhitespace(line);
+    return { hash, name, symref: symref || undefined };
 }
 
 function mapLineToObject(line) {
@@ -131,7 +131,8 @@ const mapTreeToStatements = ({ hash, children }, skipBlobs = false) => {
     ];
 };
 
-const createRefMapper = ({ refBasePath, fillColor, shape, margin }) => ({ hash, name }) => {
+const createRefMapper = ({ refBasePath, fillColor, shape, margin }) => ({ hash, name, symref }) => {
+    const target = symref || hash.trim();
     return [
         stmt(
             quote(name),
@@ -143,7 +144,7 @@ const createRefMapper = ({ refBasePath, fillColor, shape, margin }) => ({ hash, 
                 attr("margin", margin)
             )
         ),
-        edge(quote(name), hash.trim()),
+        edge(quote(name), target),
     ];
 };
 
